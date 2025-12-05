@@ -69,7 +69,7 @@ export default function FeatureCard({ feature }) {
   const Icon = ICONS[feature.icon];
 
   return (
-    <div className="group relative shrink-0 w-[85vw] md:w-[400px] lg:w-[360px] snap-center">
+    <div className="group relative shrink-0 h-[400px] w-[85vw] md:w-[400px] lg:w-[600px] snap-center">
       <div className="h-full glass-card rounded-2xl p-6 hover:border-brand-orange/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,159,28,0.15)] flex flex-col">
         <div className="noise-overlay"></div>
 

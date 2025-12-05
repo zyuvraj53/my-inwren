@@ -12,7 +12,6 @@ import AIIntelligenceSection from './components/home/AIIntelligenceSection';
 import DeveloperEngineSection from './components/home/DeveloperEngineSection';
 import Pricing from './components/home/Pricing';
 import Footer from './components/Footer';
-import VerticalCarousel from './components/VerticalCarousel';
 import {
   useHeroAnimations,
   useSectionAnimations,
@@ -23,6 +22,19 @@ import { usePricingSpotlight } from './hooks/useScrollEffects';
 
 export default function HomePage() {
   const [loaderVisible, setLoaderVisible] = useState(true);
+  const [loading, setLoading] = useState(true)
+  const [loaderComplete, setLoaderComplete] = useState(false)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false)
+      // Small delay to ensure loader fade completes
+      setTimeout(() => {
+        setLoaderComplete(true)
+      }, 500)
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   // Initialize animations
   useHeroAnimations();
@@ -38,11 +50,11 @@ export default function HomePage() {
   return (
     <>
       {loaderVisible && <Loader onComplete={handleLoaderComplete} />}
-      
+      {loading && <Loader />}
       <Navbar />
 
       <div id="page-blur-wrapper">
-        <Hero />
+        <Hero isLoaderComplete={loaderComplete} />
         <LogoStrip />
         <HowItWorks />
       </div>
@@ -56,8 +68,6 @@ export default function HomePage() {
       <div id="page-blur-wrapper-2">
         <Pricing />
       </div>
-
-      <VerticalCarousel />
 
       <Footer />
     </>

@@ -27,7 +27,7 @@ const features = [
   }
 ];
 
-export default function VerticalCarousel() {
+export default function VerticalCarouselSinSec() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -92,7 +92,7 @@ export default function VerticalCarousel() {
   const currentFeature = features[currentIndex];
 
   return (
-    <section id="carousel-section" className="py-24 bg-black relative overflow-hidden">
+    <section id="carousel-section" className="py-24 bg-transparent relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <p className="text-xs font-mono text-orange-500 uppercase tracking-widest mb-3">
@@ -104,7 +104,7 @@ export default function VerticalCarousel() {
         </div>
 
         {/* Carousel Container */}
-        <div className="relative flex gap-8 justify-center items-center">
+        <div className="relative max-w-3xl max-h-3xl flex gap-8 justify-center items-center">
           {/* Progress Dots - Left Side */}
           <div className="flex flex-col justify-center gap-4">
             {features.map((_, index) => (
@@ -124,7 +124,7 @@ export default function VerticalCarousel() {
           {/* Card Display Area */}
           <div 
             ref={carouselRef}
-            className="relative w-full max-w-[1200px] h-[500px] lg:h-[650px]"
+            className="relative w-full max-w-[1200px] h-[500px] lg:h-[500px] lg:w-[800px]"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >

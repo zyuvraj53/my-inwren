@@ -73,7 +73,7 @@ export default function Navbar() {
 
           <div className="hidden md:flex items-center gap-8">
             <a
-              href="#features"
+              href="/features"
               className="text-sm font-mono text-brand-textMuted hover:text-brand-orange transition-colors"
             >
               Platform
@@ -85,7 +85,7 @@ export default function Navbar() {
               Process
             </a>
             <a
-              href="#pricing"
+              href="/compare"
               className="text-sm font-mono text-brand-textMuted hover:text-brand-orange transition-colors"
             >
               Pricing

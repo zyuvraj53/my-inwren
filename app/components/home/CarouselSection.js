@@ -5,52 +5,22 @@ import { useRef, useEffect, useState } from 'react';
 import FeatureCard from './FeatureCard';
 
 export default function CarouselSection({ title, subtitle, features, id }) {
-  const scrollContainerRef = useRef(null);
-  const [isPaused, setIsPaused] = useState(false);
+  const scrollContainerRef = useRef(null); // Fixed: was typed as HTMLDivElement
   const [isHovering, setIsHovering] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const scrollSpeed = 1; // pixels per frame
   const totalCards = features.length;
+  const autoPlayInterval = 3000; // 3 seconds per card
 
-  // Get card width including gap
+  // Get card width + gap
   const getCardWidth = () => {
     const container = scrollContainerRef.current;
     if (!container || !container.firstElementChild) return 0;
     const card = container.firstElementChild;
-    const style = window.getComputedStyle(card);
-    const gap = 24; // 6 * 4px (gap-6 in Tailwind)
+    const gap = 24; // gap-6 = 24px
     return card.offsetWidth + gap;
   };
 
-  // Snap to nearest card
-  const snapToNearestCard = () => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
-    const cardWidth = getCardWidth();
-    if (cardWidth === 0) return;
-
-    const containerWidth = container.offsetWidth;
-    const scrollLeft = container.scrollLeft;
-    
-    // Calculate which card should be centered
-    const centerOffset = (containerWidth - cardWidth + 24) / 2;
-    const nearestIndex = Math.round((scrollLeft - centerOffset) / cardWidth);
-    
-    // Clamp to valid range
-    const clampedIndex = Math.max(0, Math.min(nearestIndex, totalCards - 1));
-    
-    // Scroll to center that card
-    const targetScroll = clampedIndex * cardWidth + centerOffset;
-    container.scrollTo({
-      left: targetScroll,
-      behavior: 'smooth'
-    });
-    
-    setCurrentIndex(clampedIndex);
-  };
-
-  // Scroll to specific card index
+  // Smoothly scroll to a specific card (centered)
   const scrollToCard = (index) => {
     const container = scrollContainerRef.current;
     if (!container) return;
@@ -61,94 +31,95 @@ export default function CarouselSection({ title, subtitle, features, id }) {
     const containerWidth = container.offsetWidth;
     const centerOffset = (containerWidth - cardWidth + 24) / 2;
     const targetScroll = index * cardWidth + centerOffset;
-    
+
     container.scrollTo({
       left: targetScroll,
       behavior: 'smooth'
     });
-    
-    setCurrentIndex(index);
+
+    setCurrentIndex(index % totalCards);
   };
 
-  // Handle wheel scroll while hovering
+  // Snap to nearest card on drag/touch end
+  const snapToNearestCard = () => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const cardWidth = getCardWidth();
+    if (cardWidth === 0) return;
+
+    const containerWidth = container.offsetWidth;
+    const scrollLeft = container.scrollLeft;
+    const centerOffset = (containerWidth - cardWidth + 24) / 2;
+    const nearestIndex = Math.round((scrollLeft - centerOffset) / cardWidth);
+    const clampedIndex = Math.max(0, Math.min(nearestIndex, totalCards - 1));
+
+    scrollToCard(clampedIndex);
+  };
+
+  // Wheel navigation when hovering
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
     const handleWheel = (e) => {
-      if (isHovering) {
-        e.preventDefault();
-        
-        // Determine scroll direction
-        const delta = e.deltaY;
-        
-        if (delta > 0) {
-          // Scroll down/right - next card
-          const nextIndex = (currentIndex + 1) % totalCards;
-          scrollToCard(nextIndex);
-        } else if (delta < 0) {
-          // Scroll up/left - previous card
-          const prevIndex = (currentIndex - 1 + totalCards) % totalCards;
-          scrollToCard(prevIndex);
-        }
+      if (!isHovering) return;
+      e.preventDefault();
+
+      if (e.deltaY > 0) {
+        scrollToCard(currentIndex + 1);
+      } else if (e.deltaY < 0) {
+        scrollToCard(currentIndex - 1);
       }
     };
 
     container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => container.removeEventListener('wheel', handleWheel);
+  }, [isHovering, currentIndex]);
 
-    return () => {
-      container.removeEventListener('wheel', handleWheel);
-    };
-  }, [isHovering, currentIndex, totalCards]);
+  // Auto-play: advance one card every few seconds
+  useEffect(() => {
+    if (isHovering) return;
 
-  // Auto-scroll animation when not hovering
+    const interval = setInterval(() => {
+      scrollToCard(currentIndex + 1);
+    }, autoPlayInterval);
+
+    return () => clearInterval(interval);
+  }, [currentIndex, isHovering]);
+
+  // Hover handlers
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+    setTimeout(snapToNearestCard, 100); // Clean snap when hovering
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+  };
+
+  // Snap on touch/mouse release (mobile + trackpad)
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    let animationFrameId;
-
-    const animate = () => {
-      if (!isPaused && !isHovering && container) {
-        const maxScroll = container.scrollWidth / 2; // Half because we duplicated cards
-        
-        if (container.scrollLeft >= maxScroll) {
-          // Reset to beginning for seamless loop
-          container.scrollLeft = 0;
-        } else {
-          container.scrollLeft += scrollSpeed;
-        }
-      }
-      animationFrameId = requestAnimationFrame(animate);
+    const handleRelease = () => {
+      if (isHovering) snapToNearestCard();
     };
 
-    animationFrameId = requestAnimationFrame(animate);
+    container.addEventListener('touchend', handleRelease);
+    container.addEventListener('mouseup', handleRelease);
 
     return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
+      container.removeEventListener('touchend', handleRelease);
+      container.removeEventListener('mouseup', handleRelease);
     };
-  }, [isPaused, isHovering]);
-
-  const handleMouseEnter = () => {
-    setIsPaused(true);
-    setIsHovering(true);
-    // Small delay to let auto-scroll stop, then snap
-    setTimeout(() => {
-      snapToNearestCard();
-    }, 50);
-  };
-
-  const handleMouseLeave = () => {
-    setIsPaused(false);
-    setIsHovering(false);
-  };
+  }, [isHovering]);
 
   return (
     <section id={id} className="py-24 bg-brand-black relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Section Header */}
+        {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-white">
             {title}
@@ -158,44 +129,47 @@ export default function CarouselSection({ title, subtitle, features, id }) {
           </p>
         </div>
 
-        {/* Carousel Container */}
+        {/* Carousel */}
         <div className="relative">
-          {/* Scrollable Cards */}
           <div
             ref={scrollContainerRef}
-            className={`flex gap-6 overflow-x-scroll scrollbar-hide pb-4 ${
-              isHovering ? 'snap-x snap-mandatory' : ''
-            }`}
+            className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             style={{
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
+              scrollBehavior: 'smooth' // This enables ease-in-out globally
             }}
           >
-            {features.map((feature, index) => (
-              <FeatureCard key={index} feature={feature} />
+            {/* Original cards */}
+            {features.map((feature, i) => (
+              <div key={i} className="snap-center flex-shrink-0">
+                <FeatureCard feature={feature} />
+              </div>
             ))}
-            {/* Duplicate cards for seamless infinite scroll */}
-            {features.map((feature, index) => (
-              <FeatureCard key={`duplicate-${index}`} feature={feature} />
+            {/* Duplicated for seamless loop */}
+            {features.map((feature, i) => (
+              <div key={`dup-${i}`} className="snap-center flex-shrink-0">
+                <FeatureCard feature={feature} />
+              </div>
             ))}
           </div>
         </div>
 
-        {/* Scroll Indicators */}
+        {/* Dots Indicator */}
         <div className="flex justify-center gap-2 mt-6">
-          {features.map((_, index) => (
+          {features.map((_, i) => (
             <button
-              key={index}
-              onClick={() => scrollToCard(index)}
+              key={i}
+              onClick={() => scrollToCard(i)}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentIndex
+                i === currentIndex % totalCards
                   ? 'bg-brand-orange w-8'
                   : 'bg-brand-border hover:bg-brand-orange/50'
               }`}
-              aria-label={`Go to card ${index + 1}`}
-            ></button>
+              aria-label={`Go to card ${i + 1}`}
+            />
           ))}
         </div>
       </div>
