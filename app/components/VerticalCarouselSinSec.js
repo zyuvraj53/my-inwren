@@ -39,7 +39,7 @@ export default function VerticalCarouselSinSec() {
       if (!isAnimating && !isPaused) {
         nextCard();
       }
-    }, 5000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [currentIndex, isAnimating, isPaused]);
@@ -76,7 +76,7 @@ export default function VerticalCarouselSinSec() {
     setTimeout(() => {
       setCurrentIndex((prev) => (prev + 1) % totalCards);
       setIsAnimating(false);
-    }, 800);
+    }, 300);
   };
 
   const goToCard = (index) => {
@@ -85,7 +85,7 @@ export default function VerticalCarouselSinSec() {
       setTimeout(() => {
         setCurrentIndex(index);
         setIsAnimating(false);
-      }, 800);
+      }, 300);
     }
   };
 
@@ -104,7 +104,7 @@ export default function VerticalCarouselSinSec() {
         </div>
 
         {/* Carousel Container */}
-        <div className="relative max-w-3xl max-h-3xl flex gap-8 justify-center items-center">
+        <div className="relative max-w-7xl max-h-7xl flex gap-8 justify-center items-center">
           {/* Progress Dots - Left Side */}
           <div className="flex flex-col justify-center gap-4">
             {features.map((_, index) => (
@@ -124,12 +124,12 @@ export default function VerticalCarouselSinSec() {
           {/* Card Display Area */}
           <div 
             ref={carouselRef}
-            className="relative w-full max-w-[1200px] h-[500px] lg:h-[500px] lg:w-[800px]"
+            className="relative w-full max-w-[1400px] h-[500px] lg:h-[670px] lg:w-[1400px]"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
             <div
-              className={`w-full h-full transition-all duration-800 ease-in-out ${
+              className={`w-full h-full transition-all duration-300 ease-in-out ${
                 isAnimating ? 'scale-90 opacity-0' : 'scale-100 opacity-100'
               }`}
             >
@@ -170,6 +170,50 @@ export default function VerticalCarouselSinSec() {
 }
 
 // Visual Components
+// function ComposerVisual() {
+//   return (
+//     <div className="flex h-full">
+//       <div className="w-1/4 pr-4 border-r border-zinc-800 flex flex-col">
+//         <h4 className="font-bold text-sm mb-3 text-white">Blocks</h4>
+//         <div className="space-y-2">
+//           <div className="p-2 bg-zinc-800/50 rounded flex items-center justify-between text-xs text-gray-300">
+//             Text <span className="text-orange-500">≡</span>
+//           </div>
+//           <div className="p-2 bg-zinc-800/50 rounded flex items-center justify-between text-xs text-gray-300">
+//             Image <span className="text-orange-500">⊡</span>
+//           </div>
+//           <div className="p-2 bg-zinc-800/50 rounded flex items-center justify-between text-xs text-gray-300">
+//             Button <span className="text-orange-500">◉</span>
+//           </div>
+//         </div>
+//         <h4 className="font-bold text-sm mt-6 mb-3 text-white">AI Copilot</h4>
+//         <div className="p-3 bg-orange-500/10 border border-orange-500/30 rounded-lg text-xs text-gray-300">
+//           "Draft a subject line that increases open rate by 15%."
+//         </div>
+//       </div>
+      
+//       <div className="w-3/4 pl-6 relative">
+//         <div className="h-full border border-dashed border-zinc-800 p-4 rounded-md overflow-y-auto">
+//           <div className="bg-white p-6 rounded-lg shadow-lg">
+//             <h5 className="text-xl font-bold text-black mb-2">👋 Welcome, [FIRST_NAME]!</h5>
+//             <p className="text-gray-600 mb-4 text-sm">
+//               Thanks for joining the waitlist! Our AI noticed you're interested in scaling SaaS marketing.
+//             </p>
+//             <div className="h-4 bg-blue-500 rounded-full w-48 mx-auto mt-6"></div>
+//           </div>
+//           <div className="mt-4 p-4 bg-zinc-950 border border-zinc-800 rounded-lg flex justify-between items-center">
+//             <span className="text-xs font-mono text-orange-500">AI Generated Copy: 95% Match</span>
+//             <span className="text-green-500">✓</span>
+//           </div>
+//         </div>
+//         <span className="absolute top-2 right-2 px-3 py-1 bg-orange-500 text-black text-xs rounded-full font-bold">
+//           Preview: Desktop/Mobile
+//         </span>
+//       </div>
+//     </div>
+//   );
+// }
+
 function ComposerVisual() {
   return (
     <div className="flex h-full">
@@ -194,13 +238,58 @@ function ComposerVisual() {
       
       <div className="w-3/4 pl-6 relative">
         <div className="h-full border border-dashed border-zinc-800 p-4 rounded-md overflow-y-auto">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h5 className="text-xl font-bold text-black mb-2">👋 Welcome, [FIRST_NAME]!</h5>
-            <p className="text-gray-600 mb-4 text-sm">
-              Thanks for joining the waitlist! Our AI noticed you're interested in scaling SaaS marketing.
-            </p>
-            <div className="h-4 bg-blue-500 rounded-full w-48 mx-auto mt-6"></div>
+          <div className="bg-gradient-to-br from-slate-50 to-slate-100 p-6 rounded-xl shadow-2xl border border-slate-200 relative overflow-hidden">
+            {/* Decorative background elements */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl"></div>
+            
+            {/* Email Header */}
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-600 rounded-full flex items-center justify-center text-2xl shadow-lg">
+                  👋
+                </div>
+                <div>
+                  <h5 className="text-2xl font-bold text-slate-900 tracking-tight">
+                    Welcome, <span className="text-orange-600">[FIRST_NAME]</span>!
+                  </h5>
+                  <p className="text-xs text-slate-500 font-medium">Your journey starts here</p>
+                </div>
+              </div>
+              
+              <div className="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent my-4"></div>
+              
+              <p className="text-gray-700 mb-4 text-sm leading-relaxed">
+                Thanks for joining the waitlist! Our AI noticed you're interested in 
+                <span className="font-semibold text-slate-900"> scaling SaaS marketing</span>.
+              </p>
+              
+              {/* CTA Button */}
+              <div className="mt-6 flex justify-center">
+                <button className="px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center gap-2">
+                  Get Started
+                  <span>→</span>
+                </button>
+              </div>
+              
+              {/* Features Grid */}
+              <div className="mt-6 grid grid-cols-3 gap-2">
+                <div className="text-center p-2 bg-white/50 rounded-lg border border-slate-200">
+                  <div className="text-lg">⚡</div>
+                  <p className="text-xs text-slate-600 font-medium">Fast</p>
+                </div>
+                <div className="text-center p-2 bg-white/50 rounded-lg border border-slate-200">
+                  <div className="text-lg">🎯</div>
+                  <p className="text-xs text-slate-600 font-medium">Smart</p>
+                </div>
+                <div className="text-center p-2 bg-white/50 rounded-lg border border-slate-200">
+                  <div className="text-lg">📈</div>
+                  <p className="text-xs text-slate-600 font-medium">Growth</p>
+                </div>
+              </div>
+            </div>
           </div>
+          
           <div className="mt-4 p-4 bg-zinc-950 border border-zinc-800 rounded-lg flex justify-between items-center">
             <span className="text-xs font-mono text-orange-500">AI Generated Copy: 95% Match</span>
             <span className="text-green-500">✓</span>
@@ -263,17 +352,17 @@ function AnalyticsVisual() {
         <div className="w-1/3 p-4 bg-black/50 border border-zinc-800 rounded-lg">
           <p className="text-xs text-gray-400 uppercase">Open Rate</p>
           <div className="text-3xl font-bold text-white">42.5%</div>
-          <span className="text-green-400 text-sm flex items-center">↑ +4.1% WoW</span>
+          <span className="text-green-400 text-sm flex items-center justify-center">↑ +4.1% WoW</span>
         </div>
         <div className="w-1/3 p-4 bg-black/50 border border-zinc-800 rounded-lg">
           <p className="text-xs text-gray-400 uppercase">Conversions</p>
           <div className="text-3xl font-bold text-white">1,489</div>
-          <span className="text-red-400 text-sm flex items-center">↓ -0.8% WoW</span>
+          <span className="text-red-400 text-sm flex items-center justify-center">↓ -0.8% WoW</span>
         </div>
         <div className="w-1/3 p-4 bg-black/50 border border-zinc-800 rounded-lg">
           <p className="text-xs text-gray-400 uppercase">Estimated Revenue</p>
           <div className="text-3xl font-bold text-orange-500">$14,500</div>
-          <span className="text-green-400 text-sm flex items-center">↑ +12.5% MoM</span>
+          <span className="text-green-400 text-sm flex items-center justify-center">↑ +12.5% MoM</span>
         </div>
       </div>
       

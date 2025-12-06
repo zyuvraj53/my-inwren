@@ -22,7 +22,7 @@ export default function CurrencyToggle({ currency, onCurrencyChange, detectedCou
 
   // Build currency list dynamically
   const currencies = useMemo(() => {
-    const baseCurrencies = ['USD', 'INR'];
+    const baseCurrencies = ['USD'];
     
     if (detectedCountry && countryData[detectedCountry]) {
       const detectedCurrency = countryData[detectedCountry].currency;
@@ -41,13 +41,13 @@ export default function CurrencyToggle({ currency, onCurrencyChange, detectedCou
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex bg-brand-border p-1 rounded-md border border-[#333] shadow-sm">
+    <div className="flex flex-col gap-2 items-center">
+      <div className="flex bg-brand-border p-1 rounded-md border border-[#333] shadow-sm w-fit">
         {currencies.map((curr) => (
           <button
             key={curr}
             onClick={() => onCurrencyChange(curr)}
-            className={`px-3 py-1.5 rounded text-xs font-mono font-bold transition-all ${
+            className={`px-3 py-1.5 rounded text-xs font-mono font-bold transition-all flex-shrink-0 ${
               currency === curr
                 ? 'bg-[#333] text-white shadow'
                 : 'text-[#666] hover:text-[#999]'
@@ -60,17 +60,17 @@ export default function CurrencyToggle({ currency, onCurrencyChange, detectedCou
       
       {/* Location Indicator */}
       {detectedCountry && !isLoading && (
-        <div className="flex items-center gap-1.5 text-[10px] font-mono text-[#666]">
-          <MapPin className="w-3 h-3" />
-          <span>
+        <div className="flex items-center justify-center gap-1.5 text-[10px] font-mono text-[#666] w-full">
+          <MapPin className="w-3 h-3 flex-shrink-0" />
+          <span className="text-center">
             Detected: {getCountryName(detectedCountry)}
           </span>
         </div>
       )}
       
       {isLoading && (
-        <div className="flex items-center gap-1.5 text-[10px] font-mono text-[#666]">
-          <div className="w-3 h-3 border-2 border-[#666] border-t-transparent rounded-full animate-spin" />
+        <div className="flex items-center justify-center gap-1.5 text-[10px] font-mono text-[#666] w-full">
+          <div className="w-3 h-3 border-2 border-[#666] border-t-transparent rounded-full animate-spin flex-shrink-0" />
           <span>Detecting location...</span>
         </div>
       )}

@@ -6,7 +6,7 @@ export default function BillingToggle({ billingCycle, onBillingChange }) {
     <div className="flex items-center gap-4">
       <span
         className={`text-sm font-mono ${
-          billingCycle === 'monthly' ? 'text-white' : 'text-[#888888]'
+          billingCycle === 'monthly' ? 'text-white' : 'text-brand-text-muted'
         }`}
       >
         Monthly
@@ -14,21 +14,21 @@ export default function BillingToggle({ billingCycle, onBillingChange }) {
       
       <button
         onClick={onBillingChange}
-        className="w-12 h-6 bg-[#1E1E1E] rounded-full relative transition-colors border border-[#333]"
+        className="w-12 h-6 bg-brand-border rounded-full relative transition-colors border border-[#333] flex items-center"
       >
         <div
-          className={`absolute top-[2px] left-[2px] w-4 h-4 bg-[#FF9F1C] rounded-full transition-transform duration-300 ${
-            billingCycle === 'yearly' ? 'translate-x-6' : ''
+          className={`absolute w-4 h-4 bg-brand-orange rounded-full transition-transform duration-300 ${
+            billingCycle === 'yearly' ? 'translate-x-6' : 'translate-x-1'
           }`}
         ></div>
       </button>
       
       <span
         className={`text-sm font-mono ${
-          billingCycle === 'yearly' ? 'text-white' : 'text-[#888888]'
+          billingCycle === 'yearly' ? 'text-white' : 'text-brand-text-muted'
         }`}
       >
-        Yearly <span className="text-[#FF9F1C] text-xs ml-1">-20%</span>
+        Yearly <span className="text-brand-text text-xs ml-1">-20%</span>
       </span>
     </div>
   );

@@ -1,11 +1,11 @@
 // components/home/FeaturePanel.js
-import { ShieldCheck, Shield, Workflow, Code2, Check } from 'lucide-react';
+import { ShieldCheck, Shield, Workflow, Check } from 'lucide-react';
 
 const ICONS = {
   'shield-check': ShieldCheck,
-  shield: Shield,
-  workflow: Workflow,
-  'code-2': Code2,
+  'shield': Shield,
+  'workflow': Workflow,
+  // Removed 'code-2': Code2,
 };
 
 export default function FeaturePanel({

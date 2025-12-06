@@ -1,7 +1,7 @@
 // app/page.js
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Loader from './components/home/Loader';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -21,20 +21,7 @@ import {
 import { usePricingSpotlight } from './hooks/useScrollEffects';
 
 export default function HomePage() {
-  const [loaderVisible, setLoaderVisible] = useState(true);
-  const [loading, setLoading] = useState(true)
-  const [loaderComplete, setLoaderComplete] = useState(false)
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false)
-      // Small delay to ensure loader fade completes
-      setTimeout(() => {
-        setLoaderComplete(true)
-      }, 500)
-    }, 500)
-
-    return () => clearTimeout(timer)
-  }, [])
+  const [loaderComplete, setLoaderComplete] = useState(false);
 
   // Initialize animations
   useHeroAnimations();
@@ -44,13 +31,12 @@ export default function HomePage() {
   usePricingSpotlight('.pricing-card');
 
   const handleLoaderComplete = () => {
-    setLoaderVisible(false);
+    setLoaderComplete(true);
   };
 
   return (
     <>
-      {loaderVisible && <Loader onComplete={handleLoaderComplete} />}
-      {loading && <Loader />}
+      {!loaderComplete && <Loader onComplete={handleLoaderComplete} />}
       <Navbar />
 
       <div id="page-blur-wrapper">
@@ -61,7 +47,7 @@ export default function HomePage() {
 
       <FeaturesStack />
 
-      {/* New Carousel Sections */}
+      {/* New Accordion Sections */}
       <AIIntelligenceSection />
       <DeveloperEngineSection />
 

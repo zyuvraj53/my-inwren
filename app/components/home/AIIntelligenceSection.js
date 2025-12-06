@@ -1,11 +1,11 @@
 // components/home/AIIntelligenceSection.js
 
-import CarouselSection from './CarouselSection';
+import AccordionSection from './AccordionSection';
 import { AI_FEATURES } from '../../data/aiIntelligenceData';
 
 export default function AIIntelligenceSection() {
   return (
-    <CarouselSection
+    <AccordionSection
       id="ai-intelligence"
       title="AI Intelligence & Precision Automation"
       subtitle="Transform marketing strategy into executable campaigns using machine learning, predictive analytics, and generative intelligence."

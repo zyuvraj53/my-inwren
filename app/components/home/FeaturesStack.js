@@ -109,57 +109,8 @@ const featuresData = [
     order: 'text-first',
     gradient: 'bg-gradient-to-br from-[#050a14] to-[#020202]',
     zIndex: 'z-30',
-  },
-  {
-    icon: 'code-2',
-    title: 'Developer Email Engine',
-    description:
-      'A modern email engine designed for scale, speed, and observability. Inwren gives your product the deliverability power of an enterprise ESP with the clarity of an API-first platform.',
-    features: [
-      'Fast, reliable APIs with built-in retries + dedupe',
-      'Webhooks for every event and lifecycle',
-      'Versioned templates with complete control',
-      'Structured logs, traces, and audit visibility',
-      'Real-time event streams for full operational awareness',
-    ],
-    visual: (
-      <div className="glass-card w-full max-w-lg rounded-xl overflow-hidden shadow-2xl border-blue-500/20">
-        <div className="bg-[#0f0f0f] border-b border-white/10 px-4 py-2 flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-red-500"></div>
-          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-          <div className="w-3 h-3 rounded-full bg-green-500"></div>
-          <span className="ml-2 font-mono text-xs text-gray-500">curl request</span>
-        </div>
-        <div className="p-6 font-mono text-sm text-gray-300 overflow-x-auto">
-          <p>
-            <span className="text-purple-400">curl</span> -X POST \
-          </p>
-          <p className="pl-4">https://api.inwren.com/v1/send \</p>
-          <p className="pl-4">
-            -H <span className="text-green-400">'Authorization: Bearer sk_live...'</span> \
-          </p>
-          <p className="pl-4">
-            -d <span className="text-yellow-400">{'{'}</span>
-          </p>
-          <p className="pl-8">
-            <span className="text-blue-400">"to"</span>: "alex@example.com",
-          </p>
-          <p className="pl-8">
-            <span className="text-blue-400">"template"</span>: "welcome_v3",
-          </p>
-          <p className="pl-8">
-            <span className="text-blue-400">"data"</span>: {'{'} "name": "Alex" {'}'}
-          </p>
-          <p className="pl-4">
-            <span className="text-yellow-400">{'}'}</span>
-          </p>
-        </div>
-      </div>
-    ),
-    order: 'visual-first',
-    gradient: 'bg-[#000]',
-    zIndex: 'z-40',
-  },
+  }
+  // Removed the developer engine section entirely
 ];
 
 export default function FeaturesStack() {
@@ -198,7 +149,7 @@ export default function FeaturesStack() {
         id="feature-progress"
         className="hidden md:flex fixed top-24 left-1/2 -translate-x-1/2 z-40 gap-3 opacity-0 transition-opacity duration-300"
       >
-        {[...Array(4)].map((_, i) => (
+        {[...Array(3)].map((_, i) => ( // Changed from 4 to 3
           <span
             key={i}
             className="w-2.5 h-2.5 rounded-full bg-brand-border progress-dot"
